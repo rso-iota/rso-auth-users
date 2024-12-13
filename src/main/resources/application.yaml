@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: User auth service # Info
+  main:
+    banner-mode: off # Conf.
+  datasource:
+    url: jdbc:postgresql://localhost:5432/lobby # Conf.
+    username: be # Conf.
+    password: secret # Conf.
+  jpa:
+    open-in-view: false
+  web:
+    resources:
+      add-mappings: false
+
+server:
+  port: 8080 # Info
+
+springdoc:
+  api-docs:
+    enabled: true # Conf. (swagger-ui/index.html)springdoc:
+  swagger-ui:
+    oauth:
+      client-id: external-client # Helps with the OAuth2 login
+
+svc:
+  keycloak:
+    auth-server-url: https://rso-keycloak.janvasiljevic.com
+    client-id: external-client
+    realm: test
+
