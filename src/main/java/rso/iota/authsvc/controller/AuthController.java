@@ -18,10 +18,11 @@ import java.util.Map;
 
 
 @ControllerCommon(
-        path = "/api/v1/auth",
+        path = "/auth",
         tag = "Traefik forward auth",
-        description = "Main authentication controller"
+        description = "Main authentication controller for traefik forward auth"
 )
+
 @AllArgsConstructor
 @Slf4j
 public class AuthController {
