@@ -12,12 +12,16 @@ spring:
   web:
     resources:
       add-mappings: false
-  servlet:
-    context-path: /api/lobby # Conf.
 
-
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
 server:
   port: 8080 # Info
+  servlet:
+    context-path: /api/auth # Conf.
 
 springdoc:
   api-docs:
