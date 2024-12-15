@@ -13,12 +13,15 @@ spring:
     resources:
       add-mappings: false
 
-#logging:
-#  level:
-#    org:
-#      springframework:
-#        security: DEBUG
-#
+logbook:
+
+  secure-filter:
+    enabled: true
+
+logging:
+  level:
+    org.zalando.logbook: TRACE
+
 management:
   endpoint:
     health:

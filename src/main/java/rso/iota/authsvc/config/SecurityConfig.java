@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import rso.iota.authsvc.env.KeycloakProperties;
 
 import java.util.Arrays;
