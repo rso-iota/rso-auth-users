@@ -13,12 +13,12 @@ spring:
     resources:
       add-mappings: false
 
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
-
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: DEBUG
+#
 management:
   endpoint:
     health:
@@ -28,9 +28,6 @@ server:
   port: 8080 # Info
   servlet:
     context-path: /api/auth # Conf.
-
-
-
 
 springdoc:
   api-docs:

@@ -14,7 +14,11 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
 import rso.iota.authsvc.env.KeycloakProperties;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +34,13 @@ public class SecurityConfig {
         // the client doesn't support Bearer tokens in headers (like browsers)
         resolver.setAllowUriQueryParameter(true);
 
-        return http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable). // Rest API
+        return http.cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(List.of("*"));
+                    configuration.setAllowedMethods(List.of("*"));
+                    configuration.setAllowedHeaders(List.of("*"));
+                    return configuration;
+                })).csrf(AbstractHttpConfigurer::disable). // Rest API
                 formLogin(AbstractHttpConfigurer::disable). // Disable form login
                 sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Create stateless session
 //                exceptionHandling(eh -> eh.authenticationEntryPoint(restAuthenticationEntryPoint)). // Set entry point
