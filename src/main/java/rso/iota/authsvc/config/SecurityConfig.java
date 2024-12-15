@@ -30,7 +30,7 @@ public class SecurityConfig {
         // the client doesn't support Bearer tokens in headers (like browsers)
         resolver.setAllowUriQueryParameter(true);
 
-        return http.csrf(AbstractHttpConfigurer::disable). // Rest API
+        return http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable). // Rest API
                 formLogin(AbstractHttpConfigurer::disable). // Disable form login
                 sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Create stateless session
 //                exceptionHandling(eh -> eh.authenticationEntryPoint(restAuthenticationEntryPoint)). // Set entry point
@@ -49,13 +49,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<PublicPathFilterConfig> publicPathAuth(){
-        FilterRegistrationBean<PublicPathFilterConfig> registrationBean
-                = new FilterRegistrationBean<>();
+    public FilterRegistrationBean<PublicPathFilterConfig> publicPathAuth() {
+        FilterRegistrationBean<PublicPathFilterConfig> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new PublicPathFilterConfig());
         registrationBean.addUrlPatterns("/auth/*");
-        registrationBean.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER - 1 ); // Filter before authentication filter
+        registrationBean.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER - 1); // Filter before authentication filter
 
         return registrationBean;
     }
