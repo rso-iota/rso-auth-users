@@ -46,11 +46,11 @@ public class AuthController {
     )
     @SecurityRequirement(name = OpenApiConfig.OAUTH_SCHEME_NAME)
     @Api200(description = "Check if user is authenticated")
-    public ResponseEntity<Void> getAuth(@RequestHeader("X-Forwarded-Method") String forwardedMethod,
-                                        @RequestHeader("X-Forwarded-Proto") String forwardedProto,
-                                        @RequestHeader("X-Forwarded-Host") String forwardedHost,
-                                        @RequestHeader("X-Forwarded-Uri") String forwardedUri,
-                                        @RequestHeader("X-Forwarded-For") String forwardedFor) {
+    public ResponseEntity<Void> getAuth(@RequestHeader(value = "X-Forwarded-Method", required = false) String forwardedMethod,
+                                        @RequestHeader(value = "X-Forwarded-Proto", required = false) String forwardedProto,
+                                        @RequestHeader(value = "X-Forwarded-Host", required = false) String forwardedHost,
+                                        @RequestHeader(value = "X-Forwarded-Uri", required = false) String forwardedUri,
+                                        @RequestHeader(value = "X-Forwarded-For", required = false) String forwardedFor) {
 
         if (properties.logXForwardedHeaders()) {
             log.info("Forwarded headers: method: {}, proto: {}, host: {}, uri: {}, for: {}",
