@@ -82,3 +82,4 @@ public class AuthController {
 record AuthControllerProperties(@NotNull Boolean logXForwardedHeaders) {
 }
 
+

@@ -1,6 +1,7 @@
 package rso.iota.authsvc.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,7 +55,7 @@ public class SecurityConfig {
 
         registrationBean.setFilter(new PublicPathFilterConfig());
         registrationBean.addUrlPatterns("/auth/*");
-        registrationBean.setOrder(2);
+        registrationBean.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER - 1 ); // Filter before authentication filter
 
         return registrationBean;
     }
