@@ -14,13 +14,12 @@ spring:
       add-mappings: false
 
 logbook:
-
   secure-filter:
     enabled: true
 
-logging:
-  level:
-    org.zalando.logbook: TRACE
+#logging:
+#  level:
+#    org.zalando.logbook: TRACE
 
 management:
   endpoint:
