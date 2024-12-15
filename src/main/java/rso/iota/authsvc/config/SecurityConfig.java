@@ -1,6 +1,7 @@
 package rso.iota.authsvc.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -30,28 +31,31 @@ public class SecurityConfig {
 
         return http.csrf(AbstractHttpConfigurer::disable). // Rest API
                 formLogin(AbstractHttpConfigurer::disable). // Disable form login
-                sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)). // Create stateless session
+                sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Create stateless session
 //                exceptionHandling(eh -> eh.authenticationEntryPoint(restAuthenticationEntryPoint)). // Set entry point
-        authorizeHttpRequests(authorize -> authorize.requestMatchers(
-        // Actuator - health check
-        "/actuator/**",
-        // Api docs
-        "/v3/api-docs",
-        "/v3/api-docs/**",
-        "/swagger-ui.html",
-        "/swagger-ui/**",
-        "/conf",
-        "/static/fonts/**",
-        "/sw.js",
-        "/favicon.ico").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(authorize -> authorize.requestMatchers("/auth/**")
+                        .authenticated() // Authenticate requests to /auth/**
+                        .anyRequest()
+                        .permitAll()) // Permit all other requests
                 .oauth2ResourceServer(oauth -> oauth.jwt(jwt -> jwt.decoder(jwtDecoder()))
-                        .bearerTokenResolver(resolver))
-                .build();
+                        .bearerTokenResolver(resolver)).build();
     }
 
     @Bean
     public JwtDecoder jwtDecoder() {
         // The under laying implementation of JwtDecoder is NimbusJwtDecoder
         return JwtDecoders.fromIssuerLocation(keycloakProperties.getIssuerUrl());
+    }
+
+    @Bean
+    public FilterRegistrationBean<PublicPathFilterConfig> publicPathAuth(){
+        FilterRegistrationBean<PublicPathFilterConfig> registrationBean
+                = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new PublicPathFilterConfig());
+        registrationBean.addUrlPatterns("/auth/*");
+        registrationBean.setOrder(2);
+
+        return registrationBean;
     }
 }

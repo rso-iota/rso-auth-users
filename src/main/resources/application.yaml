@@ -12,20 +12,28 @@ spring:
   web:
     resources:
       add-mappings: false
+  servlet:
+    context-path: /api/lobby # Conf.
+
 
 server:
   port: 8080 # Info
 
 springdoc:
   api-docs:
-    enabled: true # Conf. (swagger-ui/index.html)springdoc:
+    enabled: true # Conf.
+    path: /public/v3/api-docs
   swagger-ui:
     oauth:
-      client-id: external-client # Helps with the OAuth2 login
+      client-id: external-client # Conf. Helps with the OAuth2 login
+    path: /public/docs # Conf. The path to the Swagger UI
+    url: /public/v3/api-docs # Conf. The URL to the Swagger API docs
 
 svc:
   keycloak:
     auth-server-url: https://rso-keycloak.janvasiljevic.com
     client-id: external-client
     realm: test
+  auth-forward:
+    log-x-forwarded-headers: true
 
