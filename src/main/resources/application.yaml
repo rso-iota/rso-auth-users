@@ -15,8 +15,8 @@ spring:
 
 
 # Toggle this to log all requests and responses
-# logging.level.org.zalando.logbook: TRACE
-# logbook.secure-filter.enabled: true
+#logging.level.org.zalando.logbook: TRACE
+#logbook.secure-filter.enabled: true
 
 management:
   endpoint:
