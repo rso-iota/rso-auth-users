@@ -13,13 +13,10 @@ spring:
     resources:
       add-mappings: false
 
-logbook:
-  secure-filter:
-    enabled: true
 
-#logging:
-#  level:
-#    org.zalando.logbook: TRACE
+# Toggle this to log all requests and responses
+# logging.level.org.zalando.logbook: TRACE
+# logbook.secure-filter.enabled: true
 
 management:
   endpoint:
@@ -46,5 +43,13 @@ svc:
     auth-server-url: https://rso-keycloak.janvasiljevic.com
     client-id: external-client
     realm: test
+  # For dev.: Create 'application-local.yaml' in 'src/main/resources' with sensitive data
+  keycloak-admin:
+    server-url: https://rso-keycloak.janvasiljevic.com
+    client-id:
+    realm:
+    username:
+    password:
+    frontend-client-id: frontend-client
   auth-forward:
     log-x-forwarded-headers: true
