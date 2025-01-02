@@ -51,5 +51,6 @@ svc:
     username:
     password:
     frontend-client-id: frontend-client
+    frontend-realm: "aga.rso"
   auth-forward:
     log-x-forwarded-headers: true
