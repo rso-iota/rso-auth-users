@@ -8,4 +8,7 @@ import lombok.Data;
 public class UserInfoOut {
     private String sub;
     private String email;
+    private String preferredUsername;
+    private String familyName;
+    private String givenName;
 }

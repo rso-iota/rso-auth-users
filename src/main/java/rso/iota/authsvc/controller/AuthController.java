@@ -110,12 +110,27 @@ public class AuthController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof JwtAuthenticationToken jwtToken) {
             Map<String, Object> claims = jwtToken.getTokenAttributes();
-            String email = (String) claims.get("email");
-            String sub = (String) claims.get("sub");
+            String email = null;
+            String sub = null;
+            String username = null;
+            String givenName = null;
+            String familyName = null;
+
+            if (claims.containsKey("email")) email = (String) claims.get("email");
+            if (claims.containsKey("sub")) sub = (String) claims.get("sub");
+            if (claims.containsKey("preferred_username")) username = (String) claims.get("preferred_username");
+            if (claims.containsKey("given_name")) givenName = (String) claims.get("given_name");
+            if (claims.containsKey("family_name")) familyName = (String) claims.get("family_name");
 
             log.info("User (sub: {}, email: {}) authenticated", sub, email);
 
-            return ResponseEntity.ok(UserInfoOut.builder().sub(sub).email(email).build());
+            return ResponseEntity.ok(UserInfoOut.builder()
+                    .sub(sub)
+                    .email(email)
+                    .preferredUsername(username)
+                    .givenName(givenName)
+                    .familyName(familyName)
+                    .build());
         }
 
         return unknownAuth();
