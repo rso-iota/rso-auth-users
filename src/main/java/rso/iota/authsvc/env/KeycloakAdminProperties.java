@@ -13,6 +13,7 @@ public record KeycloakAdminProperties(@NotNull @NotBlank String serverUrl,
                                       @NotNull @NotBlank String clientId,
                                       @NotNull @NotBlank String username,
                                       @NotNull @NotBlank String password,
+                                      @NotNull @NotBlank String frontendRealm,
                                       @NotNull @NotBlank String frontendClientId) {
 }
 

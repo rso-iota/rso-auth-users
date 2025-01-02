@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import rso.iota.authsvc.common.annotation.Api200;
 import rso.iota.authsvc.common.annotation.ControllerCommon;
 import rso.iota.authsvc.dto.OutUserLookup;
+import rso.iota.authsvc.env.KeycloakAdminProperties;
 
 import java.util.List;
 
@@ -27,12 +28,17 @@ import java.util.List;
 public class UserController {
     private final Keycloak keycloak;
 
+    private final KeycloakAdminProperties keycloakAdminProperties;
+
     private ClientResource clientResource;
 
     @PostConstruct
     public void init() {
-        ClientRepresentation client = keycloak.realm("test").clients().findByClientId("test-client").getFirst();
-        clientResource = keycloak.realm("test").clients().get(client.getId());
+        ClientRepresentation client = keycloak.realm(keycloakAdminProperties.frontendRealm())
+                .clients()
+                .findByClientId(keycloakAdminProperties.frontendClientId())
+                .getFirst();
+        clientResource = keycloak.realm(keycloakAdminProperties.frontendRealm()).clients().get(client.getId());
     }
 
     @GetMapping("/online")
