@@ -42,7 +42,7 @@ svc:
   keycloak:
     auth-server-url: https://rso-keycloak.janvasiljevic.com
     client-id: external-client
-    realm: test
+    realm: aga.rso
   # For dev.: Create 'application-local.yaml' in 'src/main/resources' with sensitive data
   keycloak-admin:
     server-url: https://rso-keycloak.janvasiljevic.com

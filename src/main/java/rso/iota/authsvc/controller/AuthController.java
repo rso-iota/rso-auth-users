@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import rso.iota.authsvc.common.annotation.Api200;
 import rso.iota.authsvc.common.annotation.ControllerCommon;
 import rso.iota.authsvc.config.OpenApiConfig;
+import rso.iota.authsvc.dto.UserInfoOut;
 import rso.iota.authsvc.env.AuthControllerProperties;
 
 import java.util.Map;
@@ -22,8 +23,8 @@ import java.util.Map;
 
 @ControllerCommon(
         path = "/auth",
-        tag = "Traefik forward auth",
-        description = "Main authentication controller for traefik forward auth"
+        tag = "Auth",
+        description = "Main authentication controller for traefik forward auth and user info retrieval"
 )
 @AllArgsConstructor
 @Slf4j
@@ -84,13 +85,46 @@ public class AuthController {
             String email = (String) claims.get("email");
             String sub = (String) claims.get("sub");
 
-            log.info("User (sub: {}, email: {}) authenticated", sub, email);
+            log.debug("User (sub: {}, email: {}) authenticated", sub, email);
 
             return ResponseEntity.ok().header("X-User-Sub", sub).header("X-User-Email", email).build();
-        } else {
-            log.error("Authentication is not an instance of JwtAuthenticationToken");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
+        return unknownAuth();
+    }
+
+    @SecurityRequirement(name = OpenApiConfig.OAUTH_SCHEME_NAME)
+    @GetMapping("/user")
+    @Operation(
+            summary = "Authorization check and user info retrieval",
+            description = """
+                    Authorizes a request and returns the user's sub and email claims.
+                    
+                    Header `Authorization` must contain a valid access token in the form of `Bearer <token>`.
+                    
+                    Intended for internal use only.
+                    """
+    )
+    @Api200
+    public ResponseEntity<UserInfoOut> getUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof JwtAuthenticationToken jwtToken) {
+            Map<String, Object> claims = jwtToken.getTokenAttributes();
+            String email = (String) claims.get("email");
+            String sub = (String) claims.get("sub");
+
+            log.info("User (sub: {}, email: {}) authenticated", sub, email);
+
+            return ResponseEntity.ok(UserInfoOut.builder().sub(sub).email(email).build());
+        }
+
+        return unknownAuth();
+    }
+
+
+    private <T> ResponseEntity<T> unknownAuth() {
+        log.error("Authentication is not an instance of JwtAuthenticationToken");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
 
