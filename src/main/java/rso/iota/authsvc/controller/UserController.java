@@ -52,6 +52,7 @@ public class UserController {
 
         return ResponseEntity.ok(sessions.stream()
                 .map(session -> OutUserLookup.builder()
+                        .id(session.getUserId())
                         .username(session.getUsername())
                         .me(session.getUserId().equals(userId))
                         .build())

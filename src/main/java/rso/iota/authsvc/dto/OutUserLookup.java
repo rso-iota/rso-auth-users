@@ -13,4 +13,7 @@ public class OutUserLookup {
 
     @NotNull
     private Boolean me;
+
+    @NotNull
+    private String id;
 }
